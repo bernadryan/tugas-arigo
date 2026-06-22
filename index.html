@@ -180,27 +180,25 @@
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
             opacity: 0;
-            animation: fadeInUp 0.6s ease forwards;
+            animation: fadeInUp 0.4s ease forwards;
         }
-        .hp-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-hover); }
+        .hp-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
         .hp-card.hidden { display: none; }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .card-image {
             width: 100%; height: 220px;
             object-fit: cover;
-            transition: transform 0.5s ease;
             background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
         }
-        .hp-card:hover .card-image { transform: scale(1.08); }
         .image-wrapper { overflow: hidden; position: relative; }
 
         .brand-badge {
@@ -412,7 +410,7 @@
     </div>
 
     <footer>
-        <p>© TechStore - Nilai 90 (Fetch API) | Dibuat untuk tugas Web Listing</p>
+        <p>© TechStore | Developed by Ryan Yudistira</p>
     </footer>
 
     <div class="error-toast" id="errorToast">
@@ -452,85 +450,157 @@
 
     <script>
         // ============================================================
-        // NILAI 90 - DATA DIAMBIL DARI API MENGGUNAKAN FETCH()
-        // Public API: DummyJSON (https://dummyjson.com/)
+        // OPTIMALISASI: Data ditampilkan secepat mungkin dengan cache + fallback
         // ============================================================
 
-        const API_URL = 'https://dummyjson.com/products/category/smartphones?limit=10';
+        const API_URL = 'https://dummyjson.com/products/category/smartphones?limit=12&select=id,title,brand,price,rating,stock,thumbnail,description,images';
 
-        // Fallback data lokal (Array JSON) jika API gagal
+        // ============================================================
+        // FALLBACK DATA - Diperkaya dengan lebih banyak produk Samsung
+        // ============================================================
         const fallbackData = [
+            // SAMSUNG PRODUCTS (6 produk)
             {
                 id: 1,
                 nama: "Samsung Galaxy S24 Ultra",
                 harga: "Rp 18.999.000",
                 brand: "Samsung",
-                deskripsi: "Flagship terbaru dari Samsung dengan layar Dynamic AMOLED 2X 6.8 inci, kamera 200MP, dan S Pen built-in. Performa luar biasa dengan Snapdragon 8 Gen 3.",
+                deskripsi: "Flagship terbaru Samsung dengan layar Dynamic AMOLED 2X 6.8 inci, kamera 200MP, dan S Pen built-in. Performa luar biasa dengan Snapdragon 8 Gen 3 untuk gaming dan multitasking.",
                 rating: 4.8,
                 stok: "Tersedia",
-                gambar: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600&h=400&fit=crop",
-                specs: { layar: "6.8" AMOLED", ram: "12GB", storage: "256GB", baterai: "5000mAh" }
+                gambar: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.8\" AMOLED 2X", ram: "12GB", storage: "256GB", baterai: "5000mAh" }
             },
             {
                 id: 2,
-                nama: "iPhone 15 Pro Max",
-                harga: "Rp 22.999.000",
-                brand: "Apple",
-                deskripsi: "iPhone premium dengan body titanium, chip A17 Pro, dan sistem kamera pro 48MP. Desain elegan dengan Dynamic Island.",
-                rating: 4.9,
-                stok: "Tersedia",
-                gambar: "https://images.unsplash.com/photo-1696446701796-da61225697cc?w=600&h=400&fit=crop",
-                specs: { layar: "6.7" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" }
-            },
-            {
-                id: 3,
-                nama: "Xiaomi 14 Ultra",
-                harga: "Rp 16.999.000",
-                brand: "Xiaomi",
-                deskripsi: "Smartphone fotografi dengan kamera Leica 1 inci, Snapdragon 8 Gen 3, dan layar LTPO AMOLED 120Hz. Kualitas kamera profesional di genggaman.",
-                rating: 4.7,
-                stok: "Tersedia",
-                gambar: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=400&fit=crop",
-                specs: { layar: "6.73" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" }
-            },
-            {
-                id: 4,
-                nama: "OPPO Find X7 Ultra",
-                harga: "Rp 15.999.000",
-                brand: "OPPO",
-                deskripsi: "Flagship OPPO dengan kamera periskop dual telephoto, layar ProXDR, dan charging 100W SUPERVOOC. Desain premium dengan vegan leather back.",
-                rating: 4.6,
-                stok: "Habis",
-                gambar: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&h=400&fit=crop",
-                specs: { layar: "6.82" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" }
-            },
-            {
-                id: 5,
                 nama: "Samsung Galaxy Z Fold 5",
                 harga: "Rp 24.999.000",
                 brand: "Samsung",
-                deskripsi: "Smartphone lipat generasi kelima dengan layar 7.6 inci ketika dibuka. Multitasking superior dengan S Pen dan hinge yang semakin tipis.",
+                deskripsi: "Smartphone lipat premium dengan layar 7.6 inci Dynamic AMOLED 2X, Snapdragon 8 Gen 2, dan hinge yang lebih tahan lama. Multitasking maksimal dengan S Pen support.",
                 rating: 4.5,
                 stok: "Tersedia",
-                gambar: "https://images.unsplash.com/photo-1665234423628-0e392d81a9df?w=600&h=400&fit=crop",
-                specs: { layar: "7.6" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" }
+                gambar: "https://images.unsplash.com/photo-1665234423628-0e392d81a9df?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "7.6\" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" }
+            },
+            {
+                id: 3,
+                nama: "Samsung Galaxy S24+",
+                harga: "Rp 15.499.000",
+                brand: "Samsung",
+                deskripsi: "Versi lebih besar dari S24 dengan layar 6.7 inci, baterai 4900mAh, dan kamera 50MP. Performa flagship dengan harga lebih terjangkau dari Ultra.",
+                rating: 4.7,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.7\" AMOLED", ram: "8GB", storage: "256GB", baterai: "4900mAh" }
+            },
+            {
+                id: 4,
+                nama: "Samsung Galaxy Z Flip 5",
+                harga: "Rp 14.999.000",
+                brand: "Samsung",
+                deskripsi: "HP lipat clamshell dengan layar cover 3.4 inci yang lebih besar, Snapdragon 8 Gen 2, dan desain yang stylish. Compact dan powerful.",
+                rating: 4.6,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1674879315604-fe3d3053b73b?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.7\" Foldable", ram: "8GB", storage: "256GB", baterai: "3700mAh" }
+            },
+            {
+                id: 5,
+                nama: "Samsung Galaxy A55 5G",
+                harga: "Rp 6.999.000",
+                brand: "Samsung",
+                deskripsi: "Smartphone mid-range premium dengan layar Super AMOLED 6.6 inci 120Hz, kamera 50MP OIS, dan baterai 5000mAh. Performa tangguh dengan Exynos 1480.",
+                rating: 4.4,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.6\" Super AMOLED", ram: "8GB", storage: "128GB", baterai: "5000mAh" }
             },
             {
                 id: 6,
+                nama: "Samsung Galaxy S23 Ultra",
+                harga: "Rp 14.999.000",
+                brand: "Samsung",
+                deskripsi: "Flagship tahun sebelumnya dengan kamera 200MP, S Pen, dan Snapdragon 8 Gen 2. Masih menjadi pilihan premium dengan harga lebih terjangkau.",
+                rating: 4.7,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.8\" AMOLED 2X", ram: "12GB", storage: "256GB", baterai: "5000mAh" }
+            },
+            // APPLE PRODUCTS
+            {
+                id: 7,
+                nama: "iPhone 15 Pro Max",
+                harga: "Rp 22.999.000",
+                brand: "Apple",
+                deskripsi: "iPhone premium dengan body titanium, chip A17 Pro, dan sistem kamera pro 48MP. Desain elegan dengan Dynamic Island dan USB-C.",
+                rating: 4.9,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1696446701796-da61225697cc?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.7\" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" }
+            },
+            {
+                id: 8,
                 nama: "iPhone 15",
                 harga: "Rp 13.999.000",
                 brand: "Apple",
                 deskripsi: "iPhone standar dengan chip A16 Bionic, kamera 48MP, dan USB-C. Warna-warna cerah dengan desain aluminium yang ringan.",
                 rating: 4.7,
                 stok: "Tersedia",
-                gambar: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&h=400&fit=crop",
-                specs: { layar: "6.1" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" }
+                gambar: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.1\" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" }
+            },
+            // XIAOMI PRODUCTS
+            {
+                id: 9,
+                nama: "Xiaomi 14 Ultra",
+                harga: "Rp 16.999.000",
+                brand: "Xiaomi",
+                deskripsi: "Smartphone fotografi dengan kamera Leica 1 inci, Snapdragon 8 Gen 3, dan layar LTPO AMOLED 120Hz. Kualitas kamera profesional di genggaman.",
+                rating: 4.7,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.73\" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" }
+            },
+            {
+                id: 10,
+                nama: "Xiaomi 14",
+                harga: "Rp 12.999.000",
+                brand: "Xiaomi",
+                deskripsi: "Flagship compact dengan layar 6.36 inci, kamera Leica 50MP, dan Snapdragon 8 Gen 3. Performa tinggi dalam desain yang kompak.",
+                rating: 4.6,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.36\" AMOLED", ram: "12GB", storage: "256GB", baterai: "4610mAh" }
+            },
+            // OPPO PRODUCTS
+            {
+                id: 11,
+                nama: "OPPO Find X7 Ultra",
+                harga: "Rp 15.999.000",
+                brand: "OPPO",
+                deskripsi: "Flagship OPPO dengan kamera periskop dual telephoto, layar ProXDR, dan charging 100W SUPERVOOC. Desain premium dengan vegan leather back.",
+                rating: 4.6,
+                stok: "Habis",
+                gambar: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.82\" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" }
+            },
+            {
+                id: 12,
+                nama: "OPPO Reno 11 Pro",
+                harga: "Rp 8.999.000",
+                brand: "OPPO",
+                deskripsi: "HP mid-range premium dengan kamera portrait 50MP, layar AMOLED 120Hz, dan charging 80W. Desain trendy dengan performa andal.",
+                rating: 4.3,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&h=400&fit=crop&auto=format",
+                specs: { layar: "6.7\" AMOLED", ram: "12GB", storage: "256GB", baterai: "4600mAh" }
             }
         ];
 
         let hpData = [];
         let currentBrand = 'all';
         let currentSearch = '';
+        let isDataLoaded = false;
 
         const hpGrid = document.getElementById('hpGrid');
         const loadingGrid = document.getElementById('loadingGrid');
@@ -553,12 +623,11 @@
         const modalBuyBtn = document.getElementById('modalBuyBtn');
 
         // ============================================
-        // PERBAIKAN: Normalisasi brand ke huruf kapital
+        // Normalisasi brand ke huruf kapital
         // ============================================
         function normalizeBrand(brand) {
             if (!brand) return "Lainnya";
             const b = brand.toString().trim();
-            // Mapping berbagai variasi penulisan brand
             const brandMap = {
                 'samsung': 'Samsung',
                 'apple': 'Apple',
@@ -578,50 +647,82 @@
         // Mapping data API ke format aplikasi
         function mapApiData(products) {
             const specsPool = [
-                { layar: "6.8" AMOLED", ram: "12GB", storage: "256GB", baterai: "5000mAh" },
-                { layar: "6.7" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" },
-                { layar: "6.73" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" },
-                { layar: "6.82" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" },
-                { layar: "7.6" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" },
-                { layar: "6.1" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" }
+                { layar: "6.8\" AMOLED 2X", ram: "12GB", storage: "256GB", baterai: "5000mAh" },
+                { layar: "6.7\" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" },
+                { layar: "6.73\" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" },
+                { layar: "6.82\" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" },
+                { layar: "7.6\" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" },
+                { layar: "6.1\" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" },
+                { layar: "6.7\" Super AMOLED", ram: "8GB", storage: "128GB", baterai: "5000mAh" },
+                { layar: "6.36\" AMOLED", ram: "12GB", storage: "256GB", baterai: "4610mAh" },
+                { layar: "6.7\" AMOLED", ram: "12GB", storage: "256GB", baterai: "4600mAh" },
+                { layar: "6.8\" Dynamic AMOLED", ram: "8GB", storage: "128GB", baterai: "4500mAh" },
+                { layar: "6.6\" Super AMOLED", ram: "8GB", storage: "128GB", baterai: "5000mAh" },
+                { layar: "6.7\" Foldable", ram: "8GB", storage: "256GB", baterai: "3700mAh" }
             ];
 
-            return products.slice(0, 6).map((product, index) => ({
+            return products.slice(0, 12).map((product, index) => ({
                 id: product.id,
-                nama: product.title,
+                nama: product.title || `Handphone ${index + 1}`,
                 harga: `Rp ${(product.price * 15000).toLocaleString('id-ID')}`,
                 brand: normalizeBrand(product.brand),
                 deskripsi: product.description ? product.description.substring(0, 150) + "..." : "Deskripsi tidak tersedia.",
-                rating: product.rating,
+                rating: product.rating || 4.0 + Math.random() * 0.9,
                 stok: product.stock > 0 ? "Tersedia" : "Habis",
                 gambar: product.thumbnail || (product.images && product.images[0]) || '',
                 specs: specsPool[index % specsPool.length]
             }));
         }
 
-        // Fetch data dari API
+        // ============================================
+        // OPTIMALISASI 1: Tampilkan fallback dulu, lalu update dengan API
+        // ============================================
+        function showFallbackData() {
+            hpData = fallbackData;
+            loadingGrid.style.display = 'none';
+            hpGrid.style.display = 'grid';
+            renderHp(hpData);
+            showToast('📱 Menampilkan data lokal...', false);
+        }
+
+        // ============================================
+        // OPTIMALISASI 2: Fetch dengan timeout dan cache
+        // ============================================
         async function fetchHpData() {
+            // Tampilkan fallback dulu agar user tidak menunggu kosong
+            showFallbackData();
+
             try {
-                const response = await fetch(API_URL);
+                // Gunakan AbortController untuk timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch(API_URL, {
+                    cache: 'force-cache',
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
                 const data = await response.json();
 
                 if (data.products && data.products.length > 0) {
-                    hpData = mapApiData(data.products);
-                    showToast('✅ Data berhasil dimuat dari DummyJSON API', false);
-                } else {
-                    throw new Error('Data kosong dari API');
+                    const apiData = mapApiData(data.products);
+                    
+                    // Hanya update jika data API lebih lengkap
+                    if (apiData.length > 0) {
+                        hpData = apiData;
+                        renderHp(hpData);
+                        showToast('✅ Data diperbarui dari DummyJSON API', false);
+                    }
                 }
             } catch (error) {
-                console.error('Fetch API gagal:', error);
-                hpData = fallbackData;
-                errorText.textContent = 'API gagal, menggunakan data lokal';
-                showToast('⚠️ API gagal, menggunakan data lokal', true);
-            } finally {
-                loadingGrid.style.display = 'none';
-                hpGrid.style.display = 'grid';
-                renderHp(hpData);
+                console.error('Fetch API timeout/gagal:', error);
+                // Sudah pakai fallback, tidak perlu error toast besar
+                if (error.name === 'AbortError') {
+                    showToast('⏱️ API timeout, menggunakan data lokal', true);
+                }
             }
         }
 
@@ -629,23 +730,27 @@
             errorText.textContent = msg;
             errorToast.style.background = isError ? '#ef4444' : '#10b981';
             errorToast.classList.add('show');
-            setTimeout(() => errorToast.classList.remove('show'), 3000);
+            setTimeout(() => errorToast.classList.remove('show'), 2500);
         }
 
+        // ============================================
+        // Render dengan DOM Fragment untuk performa
+        // ============================================
         function renderHp(data) {
-            hpGrid.innerHTML = '';
-
             if (data.length === 0) {
                 noResults.classList.add('show');
+                hpGrid.innerHTML = '';
                 return;
             }
 
             noResults.classList.remove('show');
 
+            const fragment = document.createDocumentFragment();
+
             data.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'hp-card';
-                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animationDelay = `${Math.min(index * 0.05, 0.3)}s`;
                 card.innerHTML = `
                     <div class="image-wrapper">
                         <img class="card-image" src="${item.gambar}" alt="${item.nama}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400?text=Gambar+Tidak+Tersedia'">
@@ -666,7 +771,7 @@
                         <div class="card-footer">
                             <div class="rating">
                                 <span class="rating-star">⭐</span>
-                                <span>${item.rating}</span>
+                                <span>${Number(item.rating).toFixed(1)}</span>
                             </div>
                             <button class="detail-btn">Detail</button>
                         </div>
@@ -674,28 +779,32 @@
                 `;
 
                 card.addEventListener('click', () => openModal(item));
-                hpGrid.appendChild(card);
+                fragment.appendChild(card);
             });
+
+            hpGrid.innerHTML = '';
+            hpGrid.appendChild(fragment);
         }
 
         // ============================================
-        // PERBAIKAN: Filter brand dengan case-insensitive
+        // Filter dengan debounce untuk performa
         // ============================================
+        let filterTimeout;
+
         function filterHp() {
-            const filtered = hpData.filter(item => {
-                // Brand filter - case insensitive comparison
-                let matchBrand = true;
-                if (currentBrand !== 'all') {
-                    matchBrand = item.brand.toLowerCase() === currentBrand.toLowerCase();
-                }
-
-                // Search filter
-                const matchSearch = item.nama.toLowerCase().includes(currentSearch.toLowerCase()) ||
-                                   item.deskripsi.toLowerCase().includes(currentSearch.toLowerCase());
-
-                return matchBrand && matchSearch;
-            });
-            renderHp(filtered);
+            clearTimeout(filterTimeout);
+            filterTimeout = setTimeout(() => {
+                const filtered = hpData.filter(item => {
+                    let matchBrand = true;
+                    if (currentBrand !== 'all') {
+                        matchBrand = item.brand.toLowerCase() === currentBrand.toLowerCase();
+                    }
+                    const matchSearch = item.nama.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                       item.deskripsi.toLowerCase().includes(currentSearch.toLowerCase());
+                    return matchBrand && matchSearch;
+                });
+                renderHp(filtered);
+            }, 150);
         }
 
         searchInput.addEventListener('input', (e) => {
@@ -712,6 +821,9 @@
             });
         });
 
+        // ============================================
+        // Modal functions (tidak diubah)
+        // ============================================
         function openModal(item) {
             modalImage.src = item.gambar;
             modalImage.onerror = function() {
@@ -720,7 +832,7 @@
             modalTitle.textContent = item.nama;
             modalPrice.textContent = item.harga;
             modalBrand.textContent = item.brand;
-            modalRating.textContent = `${item.rating} / 5.0`;
+            modalRating.textContent = `${Number(item.rating).toFixed(1)} / 5.0`;
             modalStock.textContent = item.stok;
             modalStock.style.color = item.stok === 'Tersedia' ? '#059669' : '#dc2626';
             modalDesc.textContent = item.deskripsi;
@@ -760,7 +872,9 @@
             }, 1200);
         });
 
-        // Jalankan fetch saat halaman load
+        // ============================================
+        // Jalankan fetch - tampilan langsung muncul
+        // ============================================
         fetchHpData();
     </script>
 </body>
