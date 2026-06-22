@@ -1,573 +1,724 @@
-
-# Create a modern, responsive web listing for smartphones
-# This will be a complete HTML file with embedded CSS and JavaScript
-
-html_content = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhoneStore - Listing Handphone</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>TechStore - Daftar Handphone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
-            --secondary: #f59e0b;
-            --bg: #f8fafc;
+            --secondary: #10b981;
+            --dark: #0f172a;
+            --light: #f8fafc;
             --card-bg: #ffffff;
             --text: #1e293b;
             --text-light: #64748b;
-            --border: #e2e8f0;
-            --success: #10b981;
-            --danger: #ef4444;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 12px 30px rgba(0,0,0,0.15);
+            --radius: 16px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
             color: var(--text);
-            line-height: 1.6;
             min-height: 100vh;
         }
 
-        /* Header */
-        .header {
+        header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 1.5rem 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
-
-        .logo i {
-            font-size: 1.75rem;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-        }
-
-        .view-toggle {
-            display: flex;
-            background: rgba(255,255,255,0.2);
-            border-radius: 0.5rem;
-            padding: 0.25rem;
-            gap: 0.25rem;
-        }
-
-        .view-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.875rem;
-        }
-
-        .view-btn.active {
-            background: white;
-            color: var(--primary);
-        }
-
-        .view-btn:hover:not(.active) {
-            background: rgba(255,255,255,0.1);
-        }
-
-        /* Search & Filter Bar */
-        .filter-bar {
-            background: var(--card-bg);
-            padding: 1.25rem 1rem;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 80px;
-            z-index: 90;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .filter-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 250px;
+            padding: 2.5rem 1rem;
+            text-align: center;
             position: relative;
+            overflow: hidden;
         }
 
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -10%;
+            width: 300px; height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%; left: -5%;
+            width: 200px; height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+        header p { font-size: 1rem; opacity: 0.9; position: relative; z-index: 1; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+
+        .api-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--secondary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .api-badge::before {
+            content: '';
+            width: 8px; height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .filter-section {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box { flex: 1; min-width: 250px; position: relative; }
         .search-box input {
             width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.75rem;
-            border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            font-size: 0.9375rem;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-
-        .search-box input:focus {
+            padding: 0.85rem 1rem 0.85rem 2.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
-
-        .search-box i {
+        .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
+        .search-box::before {
+            content: '🔍';
             position: absolute;
-            left: 1rem;
-            top: 50%;
+            left: 1rem; top: 50%;
             transform: translateY(-50%);
-            color: var(--text-light);
+            font-size: 1rem;
         }
 
-        .filter-select {
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            font-size: 0.9375rem;
+        .brand-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid #e2e8f0;
             background: white;
+            border-radius: 25px;
             cursor: pointer;
-            font-family: inherit;
-            min-width: 160px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--text);
         }
-
-        .filter-select:focus {
-            outline: none;
+        .filter-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+        .filter-btn.active {
+            background: var(--primary); color: white;
             border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99,102,241,0.3);
         }
 
-        .sort-btn {
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            background: white;
-            cursor: pointer;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9375rem;
-            transition: all 0.2s;
-        }
-
-        .sort-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            max-width: 1200px;
-            margin: 1.5rem auto 0;
-            padding: 0 1rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .stat-chip {
-            background: var(--card-bg);
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            color: var(--text-light);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .stat-chip .count {
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        /* Main Content */
-        .main-content {
-            max-width: 1200px;
-            margin: 1.5rem auto;
-            padding: 0 1rem 3rem;
-        }
-
-        /* Grid View */
-        .grid-view {
+        .hp-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
-        /* List View */
-        .list-view {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        /* Card Styles */
-        .phone-card {
+        .shimmer-card {
             background: var(--card-bg);
-            border-radius: 1rem;
+            border-radius: var(--radius);
             overflow: hidden;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            position: relative;
+            box-shadow: var(--shadow);
         }
-
-        .phone-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
-        }
-
-        .card-badge {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            padding: 0.375rem 0.75rem;
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-            z-index: 2;
-        }
-
-        .badge-new { background: var(--success); color: white; }
-        .badge-sale { background: var(--danger); color: white; }
-        .badge-hot { background: var(--secondary); color: white; }
-
-        .card-image {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-        }
-
-        .card-body {
-            padding: 1.25rem;
-        }
-
-        .card-brand {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .card-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .card-desc {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .card-specs {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .spec-tag {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            font-size: 0.75rem;
-            color: var(--text-light);
-            background: var(--bg);
-            padding: 0.375rem 0.625rem;
-            border-radius: 0.375rem;
-        }
-
-        .spec-tag i {
-            font-size: 0.625rem;
-            color: var(--primary);
-        }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .card-price {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .price-current {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .price-original {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            text-decoration: line-through;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-icon {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 0.625rem;
-            border: 1px solid var(--border);
-            background: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            color: var(--text-light);
-        }
-
-        .btn-icon:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .btn-icon.liked {
-            background: var(--danger);
-            color: white;
-            border-color: var(--danger);
-        }
-
-        /* List View Specific */
-        .list-view .phone-card {
-            display: flex;
-            flex-direction: row;
-            align-items: stretch;
-        }
-
-        .list-view .card-image {
-            width: 240px;
-            height: auto;
-            min-height: 200px;
-            flex-shrink: 0;
-        }
-
-        .list-view .card-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .list-view .card-footer {
-            margin-top: auto;
-        }
-
-        /* Loading Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+        .shimmer-img {
+            width: 100%; height: 220px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
-            border-radius: 0.5rem;
         }
+        .shimmer-body { padding: 1.5rem; }
+        .shimmer-line {
+            height: 16px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+        .shimmer-line.short { width: 60%; }
+        .shimmer-line.medium { width: 80%; height: 40px; }
 
         @keyframes shimmer {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-light);
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: var(--border);
-        }
-
-        .empty-state h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
+        .hp-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
             opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .hp-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-hover); }
+        .hp-card.hidden { display: none; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-image {
+            width: 100%; height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        }
+        .hp-card:hover .card-image { transform: scale(1.08); }
+        .image-wrapper { overflow: hidden; position: relative; }
+
+        .brand-badge {
+            position: absolute;
+            top: 1rem; left: 1rem;
+            background: rgba(255,255,255,0.95);
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stock-badge {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+        .stock-badge.tersedia { background: rgba(16, 185, 129, 0.15); color: #059669; }
+        .stock-badge.habis { background: rgba(239, 68, 68, 0.15); color: #dc2626; }
+
+        .card-content { padding: 1.5rem; }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+        .card-title { font-size: 1.15rem; font-weight: 600; color: var(--dark); line-height: 1.3; }
+        .card-price { font-size: 1.2rem; font-weight: 700; color: var(--primary); white-space: nowrap; margin-left: 0.5rem; }
+        .card-specs {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+        .spec-tag {
+            background: #f1f5f9;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        .card-desc {
+            font-size: 0.85rem; color: var(--text-light);
+            line-height: 1.6; margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 0.8rem; border-top: 1px solid #f1f5f9;
+        }
+        .rating { display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; font-weight: 600; color: #f5a623; }
+        .rating-star { font-size: 1rem; }
+        .detail-btn {
+            background: var(--primary); color: white; border: none;
+            padding: 0.5rem 1.2rem; border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .detail-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000;
+            opacity: 0; visibility: hidden;
+            transition: all 0.3s ease;
             padding: 1rem;
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal {
-            background: var(--card-bg);
-            border-radius: 1.25rem;
-            max-width: 800px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9) translateY(20px);
-            transition: all 0.3s;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .modal-overlay.active .modal {
-            transform: scale(1) translateY(0);
-        }
-
-        .modal-header {
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: white; border-radius: var(--radius);
+            max-width: 500px; width: 100%;
+            max-height: 90vh; overflow-y: auto;
+            transform: scale(0.8) translateY(20px);
+            transition: all 0.3s ease;
             position: relative;
         }
-
-        .modal-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            transition: all 0.2s;
-        }
-
-        .modal-close:hover {
-            background: rgba(0,0,0,0.7);
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-        }
-
-        .modal-brand {
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: var(--primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-price {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .modal-desc {
-            color: var(--text-light);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-        }
-
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        .modal-image { width: 100%; height: 280px; object-fit: cover; background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); }
+        .modal-body { padding: 1.5rem; }
+        .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .modal-title { font-size: 1.4rem; font-weight: 700; color: var(--dark); }
+        .modal-price { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+        .modal-desc { font-size: 0.9rem; color: var(--text-light); line-height: 1.7; margin-bottom: 1.5rem; }
+        .modal-meta { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .meta-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--text); }
+        .meta-icon { font-size: 1.1rem; }
         .specs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
             margin-bottom: 1.5rem;
         }
-
         .spec-item {
-            background: var(--bg);
-            padding: 1rem;
-            border-radius: 0.75rem;
+            background: #f8fafc;
+            padding: 0.8rem;
+            border-radius: 10px;
             text-align: center;
         }
+        .spec-label { font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.3rem; }
+        .spec-value { font-size: 0.9rem; font-weight: 600; color: var(--dark); }
+        .modal-close {
+            position: absolute; top: 1rem; right: 1rem;
+            background: rgba(255,255,255,0.9); border: none;
+            width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .modal-close:hover { background: white; transform: rotate(90deg); }
+        .modal-buy-btn {
+            width: 100%; padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white; border: none; border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .modal-buy-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99,102,241,0.3); }
 
-        .spec-item i {
-            font-size: 1.25rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
+        .no-results { text-align: center; padding: 3rem 1rem; color: var(--text-light); display: none; }
+        .no-results.show { display: block; }
+        .no-results-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+        .error-toast {
+            position: fixed; bottom: 2rem; left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--dark); color: white;
+            padding: 1rem 1.5rem; border-radius: 12px;
+            font-size: 0.9rem; font-weight: 500;
+            box-shadow: var(--shadow-hover);
+            z-index: 2000;
+            opacity: 0; transition: all 0.4s ease;
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .error-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        footer { text-align: center; padding: 2rem 1rem; color: var(--text-light); font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.6rem; }
+            .hp-grid { grid-template-columns: 1fr; }
+            .filter-section { flex-direction: column; align-items: stretch; }
+            .search-box { min-width: 100%; }
+            .brand-filters { justify-content: center; }
+            .modal-content { max-height: 85vh; }
+            .specs-grid { grid-template-columns: 1fr; }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hp-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📱 TechStore</h1>
+        <p>Data diambil real-time dari DummyJSON API</p>
+    </header>
+
+    <div class="container">
+        <div style="text-align: center;">
+            <span class="api-badge">Live API Fetch</span>
+        </div>
+
+        <div class="filter-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Cari handphone...">
+            </div>
+            <div class="brand-filters">
+                <button class="filter-btn active" data-brand="all">Semua</button>
+                <button class="filter-btn" data-brand="Samsung">Samsung</button>
+                <button class="filter-btn" data-brand="Apple">Apple</button>
+                <button class="filter-btn" data-brand="Xiaomi">Xiaomi</button>
+                <button class="filter-btn" data-brand="OPPO">OPPO</button>
+            </div>
+        </div>
+
+        <div class="hp-grid" id="loadingGrid">
+            <div class="shimmer-card"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line medium"></div></div></div>
+            <div class="shimmer-card"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line medium"></div></div></div>
+            <div class="shimmer-card"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line medium"></div></div></div>
+            <div class="shimmer-card"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line medium"></div></div></div>
+            <div class="shimmer-card"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line medium"></div></div></div>
+            <div class="shimmer-card"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line medium"></div></div></div>
+        </div>
+
+        <div class="hp-grid" id="hpGrid" style="display: none;"></div>
+
+        <div class="no-results" id="noResults">
+            <div class="no-results-icon">😕</div>
+            <h3>Handphone tidak ditemukan</h3>
+            <p>Coba kata kunci atau brand lain</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© TechStore - Nilai 90 (Fetch API) | Dibuat untuk tugas Web Listing</p>
+    </footer>
+
+    <div class="error-toast" id="errorToast">
+        <span>⚠️</span>
+        <span id="errorText">Gagal memuat data dari API</span>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">✕</button>
+            <img class="modal-image" id="modalImage" src="" alt="">
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <span class="modal-price" id="modalPrice"></span>
+                </div>
+                <div class="modal-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🏷️</span>
+                        <span id="modalBrand"></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">⭐</span>
+                        <span id="modalRating"></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">📦</span>
+                        <span id="modalStock"></span>
+                    </div>
+                </div>
+                <div class="specs-grid" id="modalSpecs"></div>
+                <p class="modal-desc" id="modalDesc"></p>
+                <button class="modal-buy-btn" id="modalBuyBtn">🛒 Beli Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://dummyjson.com/products/category/smartphones?limit=10';
+
+        const fallbackData = [
+            {
+                id: 1,
+                nama: "Samsung Galaxy S24 Ultra",
+                harga: "Rp 18.999.000",
+                brand: "Samsung",
+                deskripsi: "Flagship terbaru dari Samsung dengan layar Dynamic AMOLED 2X 6.8 inci, kamera 200MP, dan S Pen built-in. Performa luar biasa dengan Snapdragon 8 Gen 3.",
+                rating: 4.8,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600&h=400&fit=crop",
+                specs: { layar: "6.8\" AMOLED", ram: "12GB", storage: "256GB", baterai: "5000mAh" }
+            },
+            {
+                id: 2,
+                nama: "iPhone 15 Pro Max",
+                harga: "Rp 22.999.000",
+                brand: "Apple",
+                deskripsi: "iPhone premium dengan body titanium, chip A17 Pro, dan sistem kamera pro 48MP. Desain elegan dengan Dynamic Island.",
+                rating: 4.9,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1696446701796-da61225697cc?w=600&h=400&fit=crop",
+                specs: { layar: "6.7\" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" }
+            },
+            {
+                id: 3,
+                nama: "Xiaomi 14 Ultra",
+                harga: "Rp 16.999.000",
+                brand: "Xiaomi",
+                deskripsi: "Smartphone fotografi dengan kamera Leica 1 inci, Snapdragon 8 Gen 3, dan layar LTPO AMOLED 120Hz. Kualitas kamera profesional di genggaman.",
+                rating: 4.7,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=400&fit=crop",
+                specs: { layar: "6.73\" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" }
+            },
+            {
+                id: 4,
+                nama: "OPPO Find X7 Ultra",
+                harga: "Rp 15.999.000",
+                brand: "OPPO",
+                deskripsi: "Flagship OPPO dengan kamera periskop dual telephoto, layar ProXDR, dan charging 100W SUPERVOOC. Desain premium dengan vegan leather back.",
+                rating: 4.6,
+                stok: "Habis",
+                gambar: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&h=400&fit=crop",
+                specs: { layar: "6.82\" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" }
+            },
+            {
+                id: 5,
+                nama: "Samsung Galaxy Z Fold 5",
+                harga: "Rp 24.999.000",
+                brand: "Samsung",
+                deskripsi: "Smartphone lipat generasi kelima dengan layar 7.6 inci ketika dibuka. Multitasking superior dengan S Pen dan hinge yang semakin tipis.",
+                rating: 4.5,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1665234423628-0e392d81a9df?w=600&h=400&fit=crop",
+                specs: { layar: "7.6\" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" }
+            },
+            {
+                id: 6,
+                nama: "iPhone 15",
+                harga: "Rp 13.999.000",
+                brand: "Apple",
+                deskripsi: "iPhone standar dengan chip A16 Bionic, kamera 48MP, dan USB-C. Warna-warna cerah dengan desain aluminium yang ringan.",
+                rating: 4.7,
+                stok: "Tersedia",
+                gambar: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&h=400&fit=crop",
+                specs: { layar: "6.1\" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" }
+            }
+        ];
+
+        let hpData = [];
+        let currentBrand = 'all';
+        let currentSearch = '';
+
+        const hpGrid = document.getElementById('hpGrid');
+        const loadingGrid = document.getElementById('loadingGrid');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const noResults = document.getElementById('noResults');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const errorToast = document.getElementById('errorToast');
+        const errorText = document.getElementById('errorText');
+
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalBrand = document.getElementById('modalBrand');
+        const modalRating = document.getElementById('modalRating');
+        const modalStock = document.getElementById('modalStock');
+        const modalSpecs = document.getElementById('modalSpecs');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalBuyBtn = document.getElementById('modalBuyBtn');
+
+        function mapApiData(products) {
+            const brandMap = { "Samsung": "Samsung", "Apple": "Apple", "Xiaomi": "Xiaomi", "OPPO": "OPPO" };
+            const specsPool = [
+                { layar: "6.8\" AMOLED", ram: "12GB", storage: "256GB", baterai: "5000mAh" },
+                { layar: "6.7\" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" },
+                { layar: "6.73\" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" },
+                { layar: "6.82\" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" },
+                { layar: "7.6\" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" },
+                { layar: "6.1\" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" }
+            ];
+
+            return products.slice(0, 6).map((product, index) => ({
+                id: product.id,
+                nama: product.title,
+                harga: `Rp ${(product.price * 15000).toLocaleString('id-ID')}`,
+                brand: brandMap[product.brand] || product.brand || "Lainnya",
+                deskripsi: product.description ? product.description.substring(0, 150) + "..." : "Deskripsi tidak tersedia.",
+                rating: product.rating,
+                stok: product.stock > 0 ? "Tersedia" : "Habis",
+                gambar: product.thumbnail || product.images[0],
+                specs: specsPool[index % specsPool.length]
+            }));
         }
 
-        .spec-label {
-            font-size
+        async function fetchHpData() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (data.products && data.products.length > 0) {
+                    hpData = mapApiData(data.products);
+                    showToast('✅ Data berhasil dimuat dari DummyJSON API', false);
+                } else {
+                    throw new Error('Data kosong dari API');
+                }
+            } catch (error) {
+                console.error('Fetch API gagal:', error);
+                hpData = fallbackData;
+                errorText.textContent = 'API gagal, menggunakan data lokal';
+                showToast('⚠️ API gagal, menggunakan data lokal', true);
+            } finally {
+                loadingGrid.style.display = 'none';
+                hpGrid.style.display = 'grid';
+                renderHp(hpData);
+            }
+        }
+
+        function showToast(msg, isError) {
+            errorText.textContent = msg;
+            errorToast.style.background = isError ? '#ef4444' : '#10b981';
+            errorToast.classList.add('show');
+            setTimeout(() => errorToast.classList.remove('show'), 3000);
+        }
+
+        function renderHp(data) {
+            hpGrid.innerHTML = '';
+            
+            if (data.length === 0) {
+                noResults.classList.add('show');
+                return;
+            }
+            
+            noResults.classList.remove('show');
+            
+            data.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'hp-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.innerHTML = `
+                    <div class="image-wrapper">
+                        <img class="card-image" src="${item.gambar}" alt="${item.nama}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x400?text=Gambar+Tidak+Tersedia'">
+                        <span class="brand-badge">${item.brand}</span>
+                        <span class="stock-badge ${item.stok === 'Tersedia' ? 'tersedia' : 'habis'}">${item.stok}</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">${item.nama}</h3>
+                            <span class="card-price">${item.harga}</span>
+                        </div>
+                        <div class="card-specs">
+                            <span class="spec-tag">📱 ${item.specs.layar}</span>
+                            <span class="spec-tag">💾 ${item.specs.ram}</span>
+                            <span class="spec-tag">🔋 ${item.specs.baterai}</span>
+                        </div>
+                        <p class="card-desc">${item.deskripsi}</p>
+                        <div class="card-footer">
+                            <div class="rating">
+                                <span class="rating-star">⭐</span>
+                                <span>${item.rating}</span>
+                            </div>
+                            <button class="detail-btn">Detail</button>
+                        </div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => openModal(item));
+                hpGrid.appendChild(card);
+            });
+        }
+
+        function filterHp() {
+            const filtered = hpData.filter(item => {
+                const matchBrand = currentBrand === 'all' || item.brand === currentBrand;
+                const matchSearch = item.nama.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                   item.deskripsi.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchBrand && matchSearch;
+            });
+            renderHp(filtered);
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            filterHp();
+        });
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentBrand = btn.dataset.brand;
+                filterHp();
+            });
+        });
+
+        function openModal(item) {
+            modalImage.src = item.gambar;
+            modalImage.onerror = function() {
+                this.src = 'https://via.placeholder.com/600x400?text=Gambar+Tidak+Tersedia';
+            };
+            modalTitle.textContent = item.nama;
+            modalPrice.textContent = item.harga;
+            modalBrand.textContent = item.brand;
+            modalRating.textContent = `${item.rating} / 5.0`;
+            modalStock.textContent = item.stok;
+            modalStock.style.color = item.stok === 'Tersedia' ? '#059669' : '#dc2626';
+            modalDesc.textContent = item.deskripsi;
+            modalBuyBtn.textContent = `🛒 Beli ${item.nama}`;
+            
+            modalSpecs.innerHTML = `
+                <div class="spec-item"><div class="spec-label">Layar</div><div class="spec-value">${item.specs.layar}</div></div>
+                <div class="spec-item"><div class="spec-label">RAM</div><div class="spec-value">${item.specs.ram}</div></div>
+                <div class="spec-item"><div class="spec-label">Storage</div><div class="spec-value">${item.specs.storage}</div></div>
+                <div class="spec-item"><div class="spec-label">Baterai</div><div class="spec-value">${item.specs.baterai}</div></div>
+            `;
+            
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        modalBuyBtn.addEventListener('click', () => {
+            modalBuyBtn.textContent = '✅ Ditambahkan ke Keranjang!';
+            modalBuyBtn.style.background = '#10b981';
+            setTimeout(() => {
+                modalBuyBtn.textContent = `🛒 Beli ${modalTitle.textContent}`;
+                modalBuyBtn.style.background = '';
+                closeModal();
+            }, 1200);
+        });
+
+        fetchHpData();
+    </script>
+</body>
+</html>
