@@ -391,6 +391,7 @@
             </div>
         </div>
 
+        <!-- Loading Shimmer -->
         <div class="hp-grid" id="loadingGrid">
             <div class="shimmer-card"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line medium"></div></div></div>
             <div class="shimmer-card"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line medium"></div></div></div>
@@ -400,6 +401,7 @@
             <div class="shimmer-card"><div class="shimmer-img"></div><div class="shimmer-body"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line medium"></div></div></div>
         </div>
 
+        <!-- Real Grid -->
         <div class="hp-grid" id="hpGrid" style="display: none;"></div>
 
         <div class="no-results" id="noResults">
@@ -449,8 +451,14 @@
     </div>
 
     <script>
+        // ============================================================
+        // NILAI 90 - DATA DIAMBIL DARI API MENGGUNAKAN FETCH()
+        // Public API: DummyJSON (https://dummyjson.com/)
+        // ============================================================
+
         const API_URL = 'https://dummyjson.com/products/category/smartphones?limit=10';
 
+        // Fallback data lokal (Array JSON) jika API gagal
         const fallbackData = [
             {
                 id: 1,
@@ -461,7 +469,7 @@
                 rating: 4.8,
                 stok: "Tersedia",
                 gambar: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=600&h=400&fit=crop",
-                specs: { layar: "6.8\" AMOLED", ram: "12GB", storage: "256GB", baterai: "5000mAh" }
+                specs: { layar: "6.8" AMOLED", ram: "12GB", storage: "256GB", baterai: "5000mAh" }
             },
             {
                 id: 2,
@@ -472,7 +480,7 @@
                 rating: 4.9,
                 stok: "Tersedia",
                 gambar: "https://images.unsplash.com/photo-1696446701796-da61225697cc?w=600&h=400&fit=crop",
-                specs: { layar: "6.7\" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" }
+                specs: { layar: "6.7" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" }
             },
             {
                 id: 3,
@@ -483,7 +491,7 @@
                 rating: 4.7,
                 stok: "Tersedia",
                 gambar: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=400&fit=crop",
-                specs: { layar: "6.73\" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" }
+                specs: { layar: "6.73" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" }
             },
             {
                 id: 4,
@@ -494,7 +502,7 @@
                 rating: 4.6,
                 stok: "Habis",
                 gambar: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&h=400&fit=crop",
-                specs: { layar: "6.82\" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" }
+                specs: { layar: "6.82" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" }
             },
             {
                 id: 5,
@@ -505,7 +513,7 @@
                 rating: 4.5,
                 stok: "Tersedia",
                 gambar: "https://images.unsplash.com/photo-1665234423628-0e392d81a9df?w=600&h=400&fit=crop",
-                specs: { layar: "7.6\" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" }
+                specs: { layar: "7.6" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" }
             },
             {
                 id: 6,
@@ -516,7 +524,7 @@
                 rating: 4.7,
                 stok: "Tersedia",
                 gambar: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&h=400&fit=crop",
-                specs: { layar: "6.1\" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" }
+                specs: { layar: "6.1" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" }
             }
         ];
 
@@ -544,37 +552,61 @@
         const modalDesc = document.getElementById('modalDesc');
         const modalBuyBtn = document.getElementById('modalBuyBtn');
 
+        // ============================================
+        // PERBAIKAN: Normalisasi brand ke huruf kapital
+        // ============================================
+        function normalizeBrand(brand) {
+            if (!brand) return "Lainnya";
+            const b = brand.toString().trim();
+            // Mapping berbagai variasi penulisan brand
+            const brandMap = {
+                'samsung': 'Samsung',
+                'apple': 'Apple',
+                'xiaomi': 'Xiaomi',
+                'oppo': 'OPPO',
+                'vivo': 'Vivo',
+                'huawei': 'Huawei',
+                'realme': 'Realme',
+                'oneplus': 'OnePlus',
+                'google': 'Google',
+                'sony': 'Sony'
+            };
+            const lower = b.toLowerCase();
+            return brandMap[lower] || b.charAt(0).toUpperCase() + b.slice(1).toLowerCase();
+        }
+
+        // Mapping data API ke format aplikasi
         function mapApiData(products) {
-            const brandMap = { "Samsung": "Samsung", "Apple": "Apple", "Xiaomi": "Xiaomi", "OPPO": "OPPO" };
             const specsPool = [
-                { layar: "6.8\" AMOLED", ram: "12GB", storage: "256GB", baterai: "5000mAh" },
-                { layar: "6.7\" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" },
-                { layar: "6.73\" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" },
-                { layar: "6.82\" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" },
-                { layar: "7.6\" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" },
-                { layar: "6.1\" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" }
+                { layar: "6.8" AMOLED", ram: "12GB", storage: "256GB", baterai: "5000mAh" },
+                { layar: "6.7" OLED", ram: "8GB", storage: "256GB", baterai: "4422mAh" },
+                { layar: "6.73" AMOLED", ram: "16GB", storage: "512GB", baterai: "5300mAh" },
+                { layar: "6.82" AMOLED", ram: "16GB", storage: "256GB", baterai: "5000mAh" },
+                { layar: "7.6" Foldable", ram: "12GB", storage: "512GB", baterai: "4400mAh" },
+                { layar: "6.1" OLED", ram: "6GB", storage: "128GB", baterai: "3349mAh" }
             ];
 
             return products.slice(0, 6).map((product, index) => ({
                 id: product.id,
                 nama: product.title,
                 harga: `Rp ${(product.price * 15000).toLocaleString('id-ID')}`,
-                brand: brandMap[product.brand] || product.brand || "Lainnya",
+                brand: normalizeBrand(product.brand),
                 deskripsi: product.description ? product.description.substring(0, 150) + "..." : "Deskripsi tidak tersedia.",
                 rating: product.rating,
                 stok: product.stock > 0 ? "Tersedia" : "Habis",
-                gambar: product.thumbnail || product.images[0],
+                gambar: product.thumbnail || (product.images && product.images[0]) || '',
                 specs: specsPool[index % specsPool.length]
             }));
         }
 
+        // Fetch data dari API
         async function fetchHpData() {
             try {
                 const response = await fetch(API_URL);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                
+
                 const data = await response.json();
-                
+
                 if (data.products && data.products.length > 0) {
                     hpData = mapApiData(data.products);
                     showToast('✅ Data berhasil dimuat dari DummyJSON API', false);
@@ -602,14 +634,14 @@
 
         function renderHp(data) {
             hpGrid.innerHTML = '';
-            
+
             if (data.length === 0) {
                 noResults.classList.add('show');
                 return;
             }
-            
+
             noResults.classList.remove('show');
-            
+
             data.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'hp-card';
@@ -640,17 +672,27 @@
                         </div>
                     </div>
                 `;
-                
+
                 card.addEventListener('click', () => openModal(item));
                 hpGrid.appendChild(card);
             });
         }
 
+        // ============================================
+        // PERBAIKAN: Filter brand dengan case-insensitive
+        // ============================================
         function filterHp() {
             const filtered = hpData.filter(item => {
-                const matchBrand = currentBrand === 'all' || item.brand === currentBrand;
+                // Brand filter - case insensitive comparison
+                let matchBrand = true;
+                if (currentBrand !== 'all') {
+                    matchBrand = item.brand.toLowerCase() === currentBrand.toLowerCase();
+                }
+
+                // Search filter
                 const matchSearch = item.nama.toLowerCase().includes(currentSearch.toLowerCase()) ||
                                    item.deskripsi.toLowerCase().includes(currentSearch.toLowerCase());
+
                 return matchBrand && matchSearch;
             });
             renderHp(filtered);
@@ -683,14 +725,14 @@
             modalStock.style.color = item.stok === 'Tersedia' ? '#059669' : '#dc2626';
             modalDesc.textContent = item.deskripsi;
             modalBuyBtn.textContent = `🛒 Beli ${item.nama}`;
-            
+
             modalSpecs.innerHTML = `
                 <div class="spec-item"><div class="spec-label">Layar</div><div class="spec-value">${item.specs.layar}</div></div>
                 <div class="spec-item"><div class="spec-label">RAM</div><div class="spec-value">${item.specs.ram}</div></div>
                 <div class="spec-item"><div class="spec-label">Storage</div><div class="spec-value">${item.specs.storage}</div></div>
                 <div class="spec-item"><div class="spec-label">Baterai</div><div class="spec-value">${item.specs.baterai}</div></div>
             `;
-            
+
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -718,6 +760,7 @@
             }, 1200);
         });
 
+        // Jalankan fetch saat halaman load
         fetchHpData();
     </script>
 </body>
